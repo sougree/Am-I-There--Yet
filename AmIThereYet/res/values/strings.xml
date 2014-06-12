@@ -1,5 +1,19 @@
 <resources>
-
+	<!-- App Level -->
     <string name="app_name">Am I There Yet</string>
+    
+    <!-- Main Activity -->
+    <string name="add_alert">Add Alert</string>
+    
+    <!-- Alert Detail -->
+    <string name="addAlert_header">Add a new location alert</string>
+    <string name="latitude_label">Latitude</string>
+    <string name="longitude_label">Longitude</string>
+    <string name="radius_label">Radius</string>
+    <string name="alert_type_label">Select required alert</string>
+    <string name="toastAlert_label">Toast</string>
+    <string name="ringAlert_label">Ring</string>
+    <string name="addButton">Add</string>
+    <string name="cancelButton">Cancel</string>
 
 </resources>
