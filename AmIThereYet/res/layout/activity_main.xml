@@ -1,20 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp" >
 
-    <ListView
-        android:id="@+id/alertList"
-        android:layout_width="match_parent"
-        android:layout_height="400dp" >
-    </ListView>
-
-    <Button
-        android:id="@+id/addAlertBtn"
+    <TableRow
+        android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:text="@string/add_alert" />
+        android:layout_weight="3"
+        android:gravity="center"
+        android:visibility="visible" >
 
-</LinearLayout>
+        <ListView
+            android:id="@+id/alertList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </ListView>
+        
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/addAlertBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:text="@string/add_alert" />
+    </TableRow>
+    
+</TableLayout>

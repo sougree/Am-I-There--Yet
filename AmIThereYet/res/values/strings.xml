@@ -7,6 +7,7 @@
     
     <!-- Alert Detail -->
     <string name="addAlert_header">Add a new location alert</string>
+    <string name="alertName_label">Alert Name</string>
     <string name="latitude_label">Latitude</string>
     <string name="longitude_label">Longitude</string>
     <string name="radius_label">Radius</string>
