@@ -6,7 +6,7 @@
     <string name="add_alert">Add Alert</string>
     
     <!-- Alert List in Main Activty -->
-    <string name="del_alert">Del</string>
+    <string name="del_alert">Delete this alert</string>
     
     <!-- Alert Detail -->
     <string name="addAlert_header">Add a new location alert</string>

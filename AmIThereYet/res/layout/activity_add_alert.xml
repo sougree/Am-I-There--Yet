@@ -1,200 +1,142 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-    <TableRow
-        android:id="@+id/headerTableRow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_margin="5dp">
-
-	    <TextView
-	        android:id="@+id/addAlertHeaderTextView"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/addAlert_header"
-	        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-	</TableRow>
-
-    <TableRow
-        android:id="@+id/alertNameTableRow"
+    <TextView
+        android:id="@+id/addAlertHeaderTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/addAlert_header"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:id="@+id/alertNameLabelTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="@string/alertName_label"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <EditText
-            android:id="@+id/alertNameTxt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:ems="10"
-            android:inputType="text" >
-
-            <requestFocus />
-        </EditText>
-    </TableRow>
-    
-    <TableRow
-        android:id="@+id/latitudeTableRow"
+    <TextView
+        android:id="@+id/latitudeLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp" >
-
-        <TextView
-            android:id="@+id/latitudeLabelTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="@string/latitude_label"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_alignLeft="@+id/alertNameLabelTextView"
+        android:layout_below="@+id/alertNameTxt"
+        android:layout_marginTop="14dp"
+        android:text="@string/latitude_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
             android:id="@+id/latitudeTxt"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:ems="10"
-            android:inputType="numberSigned|numberDecimal" >
-
-            <requestFocus />
-        </EditText>
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/longitudeTableRow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp" >
-
-        <TextView
-            android:id="@+id/longitudeTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="@string/longitude_label"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <EditText
-            android:id="@+id/longitudeTxt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_above="@+id/longitudeTxt"
+            android:layout_alignLeft="@+id/alertNameTxt"
             android:ems="10"
             android:inputType="numberSigned|numberDecimal" />
 
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/radiusTableRow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_margin="5dp">
-
-        <TextView
-            android:id="@+id/radiusTextView"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/alertNameTxt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/radius_label"
-            android:layout_weight="2"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/addAlertHeaderTextView"
+            android:ems="10"
+            android:inputType="text" >
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/longitudeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/latitudeLabelTextView"
+            android:ems="10"
+            android:inputType="numberSigned|numberDecimal" />
 
         <EditText
             android:id="@+id/radiusTxt"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_alignLeft="@+id/longitudeTxt"
+            android:layout_below="@+id/longitudeTextView"
             android:ems="10"
             android:hint="In Kilometers"
             android:inputType="number" />
 
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/alertTypeHeaderTableRow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_margin="5dp">
-
         <TextView
-            android:id="@+id/alertTypeHeaderText"
+            android:id="@+id/radiusTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/alert_type_label"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/toastAlertTableRow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp" >
-
-        <TextView
-            android:id="@+id/toastAlertTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/toastAlert_label"
+            android:layout_alignBottom="@+id/radiusTxt"
+            android:layout_alignLeft="@+id/longitudeTextView"
+            android:text="@string/radius_label"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <CheckBox
-            android:id="@+id/toastChk"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1" />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/ringAlertTableRow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp" >
-
         <TextView
-            android:id="@+id/ringAlertTextView"
+            android:id="@+id/longitudeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ringAlert_label"
+            android:layout_alignBottom="@+id/longitudeTxt"
+            android:layout_alignLeft="@+id/latitudeLabelTextView"
+            android:text="@string/longitude_label"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <CheckBox
-            android:id="@+id/ringChk"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/alertNameLabelTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1" />
-    </TableRow>
+            android:layout_alignBottom="@+id/alertNameTxt"
+            android:layout_alignLeft="@+id/addAlertHeaderTextView"
+            android:text="@string/alertName_label"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <TableRow
-        android:id="@+id/actionButtonsTableRow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp" >
+                <TextView
+                    android:id="@+id/alertTypeHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/radiusTextView"
+                    android:layout_below="@+id/radiusTxt"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/alert_type_label"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Button
-            android:id="@+id/addButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/addButton" />
+                <Switch
+                    android:id="@+id/toastChk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/alertTypeHeaderText"
+                    android:layout_below="@+id/alertTypeHeaderText"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/toastAlert_label" 
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancelButton" />
-    </TableRow>
-	
-</TableLayout>
+                <Switch
+                    android:id="@+id/ringChk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/alertTypeHeaderText"
+                    android:layout_below="@+id/toastChk"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/ringAlert_label" 
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                <ImageButton
+                    android:id="@+id/addButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="21dp"
+                    android:layout_toLeftOf="@+id/cancelButton"
+                    android:src="@drawable/ic_action_accept" 
+                    android:contentDescription="@string/addButton"/>
+
+                <ImageButton
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/addButton"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/ic_action_cancel" 
+                    android:contentDescription="@string/cancelButton" />
+
+</RelativeLayout>

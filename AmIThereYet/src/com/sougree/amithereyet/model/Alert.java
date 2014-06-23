@@ -3,13 +3,16 @@ package com.sougree.amithereyet.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 /**
  * Alert model
  * @author Soundra Pandian
  */
 public class Alert {
+	
+	/**
+	 * ID - Database PK
+	 */
+	protected int _id;
 	
 	/**
 	 * Name given for an alert. This would appear in the notifications.
@@ -35,6 +38,20 @@ public class Alert {
 	 * List of notifications enabled for this alert
 	 */
 	protected List<Notification> notifications = new ArrayList<Notification>();
+
+	/**
+	 * @return the _id
+	 */
+	public int getId() {
+		return _id;
+	}
+
+	/**
+	 * @param _id the _id to set
+	 */
+	public void setId(int _id) {
+		this._id = _id;
+	}
 
 	/**
 	 * @return the alertName

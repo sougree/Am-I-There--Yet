@@ -1,31 +1,33 @@
 package com.sougree.amithereyet;
 
+import com.sougree.amithereyet.dao.AlertDAO;
+
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 public class MainActivity extends Activity {
 
+	
+	private AlertDAO alertDao;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		Cursor c = getContentResolver().query(AlertContentProvider.CONTENT_URI, null, null, null, AlertContentProvider.NAME);
+		alertDao = new AlertDAO(getContentResolver());
 		
-//		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.alert_list_item_view,
-//				c, column, toView, 0);
-		AlertListAdapter adapter = new AlertListAdapter(this, c);
-		
+		AlertListAdapter adapter = new AlertListAdapter(this, alertDao.getAlerts());
 		ListView list = (ListView)findViewById(R.id.alertList);
 		list.setAdapter(adapter);
 		
 		/* Add Alert Button action to display add alert screen */
-		Button addAlertBtn = (Button)findViewById(R.id.addAlertBtn);
+		ImageButton addAlertBtn = (ImageButton)findViewById(R.id.addAlertBtn);
 		addAlertBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -34,5 +36,21 @@ public class MainActivity extends Activity {
 			}
 		});
 	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Log.d("ON RESUME", "1");
+		AlertListAdapter adapter = new AlertListAdapter(this, alertDao.getAlerts());
+		ListView list = (ListView)findViewById(R.id.alertList);
+		list.setAdapter(adapter);
+		Log.d("ON RESUME", "2");
+	}
+	
+	
+	
 
 }

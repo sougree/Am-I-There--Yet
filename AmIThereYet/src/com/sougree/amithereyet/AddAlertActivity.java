@@ -3,14 +3,13 @@ package com.sougree.amithereyet;
 import com.sougree.amithereyet.dao.AlertDAO;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 /**
@@ -19,23 +18,28 @@ import android.widget.Toast;
  */
 public class AddAlertActivity extends Activity {
 
+	private AlertDAO dao;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_alert);
 		
+		dao = new AlertDAO(getContentResolver());
+		
 		/* Cancel Button Behavior */ 
-		Button cancelButton = (Button)findViewById(R.id.cancelButton);
+		ImageButton cancelButton = (ImageButton)findViewById(R.id.cancelButton);
 		cancelButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent("com.sougree.amithereyet.ADD_ALERT_CANCEL");
-				startActivity(i);
+				//Intent i = new Intent("com.sougree.amithereyet.ADD_ALERT_CANCEL");
+				//startActivity(i);
+				finish();
 			}
 		});
 		
 		/* Add Button Behavior */
-		Button addButton = (Button)findViewById(R.id.addButton);
+		ImageButton addButton = (ImageButton)findViewById(R.id.addButton);
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -44,14 +48,15 @@ public class AddAlertActivity extends Activity {
 				EditText latitudeTxt = (EditText)findViewById(R.id.latitudeTxt);
 				EditText longitudeTxt = (EditText)findViewById(R.id.longitudeTxt);
 				EditText radiusTxt = (EditText)findViewById(R.id.radiusTxt);
-				CheckBox toastChk = (CheckBox)findViewById(R.id.toastChk);
-				CheckBox ringChk = (CheckBox)findViewById(R.id.ringChk);
+				Switch toastChk = (Switch)findViewById(R.id.toastChk);
+				Switch ringChk = (Switch)findViewById(R.id.ringChk);
 				
-				AlertDAO dao = new AlertDAO();
-				Uri uri = dao.addAlert(getContentResolver(), nameTxt, latitudeTxt, longitudeTxt, radiusTxt, toastChk, ringChk);
+				Uri uri = dao.addAlert(nameTxt, latitudeTxt, longitudeTxt, radiusTxt, toastChk, ringChk);
 				
-				Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
-				finish();
+				if(uri != null) {
+					Toast.makeText(getBaseContext(), "Alert Added!", Toast.LENGTH_SHORT).show();
+					finish();
+				}
 			}
 		});
 	}

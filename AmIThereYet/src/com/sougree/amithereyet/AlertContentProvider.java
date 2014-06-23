@@ -9,7 +9,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
@@ -20,7 +19,7 @@ public class AlertContentProvider extends ContentProvider {
 	static final String URL = "content://" + PROVIDER_NAME + "/alerts"; 
 	public static final Uri CONTENT_URI = Uri.parse(URL);
 	
-	static final String _ID = "_id"; 
+	public static final String _ID = "_id"; 
 	public static final String NAME = "name"; 
 	public static final String LATITUDE = "latitude";
 	public static final String LONGITUDE = "longitude";
@@ -45,7 +44,14 @@ public class AlertContentProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		// TODO Auto-generated method stub
-		return 0;
+		String id = uri.getPathSegments().get(1);
+		int retVal = db.delete(ALERT_TABLE_NAME, _ID + "=" + id, selectionArgs);
+		
+		if (retVal>0) {
+			getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+		}
+		
+		return retVal;
 	}
 
 	@Override
@@ -60,6 +66,7 @@ public class AlertContentProvider extends ContentProvider {
 		
 		if(id > 0) {
 			Uri retVal = ContentUris.withAppendedId(CONTENT_URI, id);
+			getContext().getContentResolver().notifyChange(CONTENT_URI, null);
 			return retVal;
 		}
 		throw new SQLException("Failed to insert record into " + CONTENT_URI);

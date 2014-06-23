@@ -1,23 +1,31 @@
 package com.sougree.amithereyet.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sougree.amithereyet.AlertContentProvider;
 import com.sougree.amithereyet.R;
 import com.sougree.amithereyet.model.Alert;
 import com.sougree.amithereyet.model.Notification;
 
-import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Switch;
 
 /**
  * DAO to CURD alert
  * @author Soundra Pandian
  */
 public class AlertDAO {
+	
+	private ContentResolver cr;
+	
+	public AlertDAO(ContentResolver cr)	{
+		this.cr = cr;
+	}
 	
 	/**
 	 * Add Alert
@@ -27,14 +35,14 @@ public class AlertDAO {
 	 * @param radTxt
 	 * @param checkboxes
 	 */
-	public Uri addAlert(ContentResolver cr, EditText nameTxt, EditText latTxt, EditText lonTxt, EditText radTxt, CheckBox... checkboxes) {
+	public Uri addAlert(EditText nameTxt, EditText latTxt, EditText lonTxt, EditText radTxt, Switch... switches) {
 		Alert alert = new Alert();
 		alert.setAlertName(nameTxt.getText().toString());
 		alert.setLatitude(Float.parseFloat(latTxt.getText().toString()));
 		alert.setLongitude(Float.parseFloat(lonTxt.getText().toString()));
 		alert.setRadius(Integer.parseInt(radTxt.getText().toString()));
 		
-		for (CheckBox chk: checkboxes) {
+		for (Switch chk: switches) {
 			if(chk.isChecked()) {
 				switch(chk.getId()) {
 					case R.id.toastChk:
@@ -57,5 +65,37 @@ public class AlertDAO {
 		Uri uri = cr.insert(AlertContentProvider.CONTENT_URI, values);
 		
 		return uri;
+	}
+	
+	/**
+	 * This method deletes a given alert
+	 * @param cr
+	 * @param dbPK
+	 * @return
+	 */
+	public int deleteAlert(int dbPK) {
+		Uri uri = Uri.withAppendedPath(AlertContentProvider.CONTENT_URI, dbPK+"");
+		return cr.delete(uri, null, null);
+	}
+	
+	public List<Alert> getAlerts() {
+		List<Alert> alerts = new ArrayList<Alert>();
+		
+		Cursor cursor = cr.query(AlertContentProvider.CONTENT_URI, null, null, null, AlertContentProvider.NAME);
+		
+		if (cursor != null && cursor.moveToFirst()) {
+			do {
+				Alert alert = new Alert();
+				alert.setId(cursor.getInt(cursor.getColumnIndex(AlertContentProvider._ID)));
+				alert.setAlertName(cursor.getString(cursor.getColumnIndex(AlertContentProvider.NAME)));
+				alert.setLatitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LATITUDE)));
+				alert.setLongitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LONGITUDE)));
+				alert.setRadius(cursor.getInt(cursor.getColumnIndex(AlertContentProvider.RADIUS)));
+				
+				alerts.add(alert);
+			} while(cursor.moveToNext());
+		}
+		
+		return alerts;
 	}
 }
