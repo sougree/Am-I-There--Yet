@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		/* Add Alert Button action to display add alert screen */
 		Button addAlertBtn = (Button)findViewById(R.id.addAlertBtn);
 		addAlertBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
