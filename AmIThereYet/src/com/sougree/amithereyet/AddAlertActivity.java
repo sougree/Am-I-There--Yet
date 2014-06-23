@@ -51,6 +51,7 @@ public class AddAlertActivity extends Activity {
 				Uri uri = dao.addAlert(getContentResolver(), nameTxt, latitudeTxt, longitudeTxt, radiusTxt, toastChk, ringChk);
 				
 				Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+				finish();
 			}
 		});
 	}

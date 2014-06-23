@@ -106,14 +106,18 @@ public class Alert {
 		if(aNotification != null) this.notifications.add(aNotification);
 	}
 	
-	/**
-	 * Saves this model to database
-	 */
-	public void save() {
-		Log.d("ALERT - Name ", this.alertName);
-		Log.d("ALERT - Lat ", this.latitude + "");
-		Log.d("ALERT - Lon ", this.longitude +"");
-		Log.d("ALERT - Rad ", this.radius + "");
-		Log.d("ALERT - Notifications ", this.notifications.toString());
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.alertName);
+		builder.append(" (");
+		builder.append(this.latitude);
+		builder.append("|");
+		builder.append(this.longitude);
+		builder.append("|");
+		builder.append(this.radius);
+		builder.append(") ");
+		builder.append(this.notifications.toString());
+
+		return builder.toString();
 	}
 }

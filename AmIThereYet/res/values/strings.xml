@@ -5,6 +5,9 @@
     <!-- Main Activity -->
     <string name="add_alert">Add Alert</string>
     
+    <!-- Alert List in Main Activty -->
+    <string name="del_alert">Del</string>
+    
     <!-- Alert Detail -->
     <string name="addAlert_header">Add a new location alert</string>
     <string name="alertName_label">Alert Name</string>
@@ -16,5 +19,7 @@
     <string name="ringAlert_label">Ring</string>
     <string name="addButton">Add</string>
     <string name="cancelButton">Cancel</string>
+    
+    
 
 </resources>
