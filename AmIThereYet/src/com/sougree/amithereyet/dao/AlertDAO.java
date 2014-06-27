@@ -11,6 +11,7 @@ import com.sougree.amithereyet.model.Notification;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.location.Location;
 import android.net.Uri;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -79,6 +80,7 @@ public class AlertDAO {
 	}
 	
 	public List<Alert> getAlerts() {
+
 		List<Alert> alerts = new ArrayList<Alert>();
 		
 		Cursor cursor = cr.query(AlertContentProvider.CONTENT_URI, null, null, null, AlertContentProvider.NAME);

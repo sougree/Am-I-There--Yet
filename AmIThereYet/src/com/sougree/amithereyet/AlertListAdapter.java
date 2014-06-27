@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.sougree.amithereyet.dao.AlertDAO;
 import com.sougree.amithereyet.model.Alert;
+import com.sougree.amithereyet.model.AlertWithInfo;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,10 +19,10 @@ import android.widget.Toast;
 
 public class AlertListAdapter extends BaseAdapter implements ListAdapter {
 
-	private List<Alert> alerts = new ArrayList<Alert>();
+	private List<AlertWithInfo> alerts = new ArrayList<AlertWithInfo>();
 	private Context context;
 	
-	public AlertListAdapter(Context context, List<Alert> alerts) {
+	public AlertListAdapter(Context context, List<AlertWithInfo> alerts) {
 		this.alerts.clear();
 		this.alerts.addAll(alerts);
 		this.context = context;
@@ -39,8 +40,7 @@ public class AlertListAdapter extends BaseAdapter implements ListAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return position;
+		return alerts.get(position).getId();
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class AlertListAdapter extends BaseAdapter implements ListAdapter {
 	        view = inflater.inflate(R.layout.alert_list_item_view, null);
 	    }
 	    
-	    Alert alert = alerts.get(position);
+	    AlertWithInfo alert = alerts.get(position);
 
 	    TextView listItemText = (TextView)view.findViewById(R.id.listAlertName); 
 	    listItemText.setText(alert.getAlertName()); 
@@ -75,7 +75,7 @@ public class AlertListAdapter extends BaseAdapter implements ListAdapter {
 	    });
 	    
 	    TextView listItemInfo = (TextView)view.findViewById(R.id.listAlertInfo); 
-	    listItemInfo.setText(alert.toString()); 
+	    listItemInfo.setText(alert.getInfo()); 
 
 	    return view; 
 	}

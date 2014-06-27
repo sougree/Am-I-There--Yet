@@ -38,7 +38,7 @@ public class Alert {
 	 * List of notifications enabled for this alert
 	 */
 	protected List<Notification> notifications = new ArrayList<Notification>();
-
+	
 	/**
 	 * @return the _id
 	 */

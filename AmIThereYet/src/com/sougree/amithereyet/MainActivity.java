@@ -1,19 +1,24 @@
 package com.sougree.amithereyet;
 
+import com.sougree.amithereyet.core.DistanceHelper;
 import com.sougree.amithereyet.dao.AlertDAO;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity implements LocationListener {
 	
 	private AlertDAO alertDao;
+	private Location lastKnownLocation;
+	private LocationManager locationManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +26,12 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		alertDao = new AlertDAO(getContentResolver());
-		
-		AlertListAdapter adapter = new AlertListAdapter(this, alertDao.getAlerts());
-		ListView list = (ListView)findViewById(R.id.alertList);
-		list.setAdapter(adapter);
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
+                3000,   // 3 sec
+                10, this);
+				
+		refreshAlertList();
 		
 		/* Add Alert Button action to display add alert screen */
 		ImageButton addAlertBtn = (ImageButton)findViewById(R.id.addAlertBtn);
@@ -43,14 +50,34 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d("ON RESUME", "1");
-		AlertListAdapter adapter = new AlertListAdapter(this, alertDao.getAlerts());
-		ListView list = (ListView)findViewById(R.id.alertList);
-		list.setAdapter(adapter);
-		Log.d("ON RESUME", "2");
+		refreshAlertList();
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		this.lastKnownLocation = location;
+		refreshAlertList();
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		this.lastKnownLocation = null;
+		refreshAlertList();
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
 	}
 	
-	
-	
-
+	private void refreshAlertList() {
+		AlertListAdapter adapter = new AlertListAdapter(this, DistanceHelper.getAlertsWithInfo(alertDao.getAlerts(), lastKnownLocation));
+		ListView list = (ListView)findViewById(R.id.alertList);
+		list.setAdapter(adapter);
+	}
 }
