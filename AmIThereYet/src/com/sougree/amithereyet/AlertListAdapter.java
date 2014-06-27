@@ -8,6 +8,7 @@ import com.sougree.amithereyet.model.Alert;
 import com.sougree.amithereyet.model.AlertWithInfo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class AlertListAdapter extends BaseAdapter implements ListAdapter {
 
 	    TextView listItemText = (TextView)view.findViewById(R.id.listAlertName); 
 	    listItemText.setText(alert.getAlertName()); 
+	    listItemText.setTag(alert);
 
 	    //Handle buttons and add onClickListeners
 	    ImageButton deleteBtn = (ImageButton)view.findViewById(R.id.delete_btn);
@@ -73,6 +75,16 @@ public class AlertListAdapter extends BaseAdapter implements ListAdapter {
 	        	}
 	        }
 	    });
+	    
+	    listItemText.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent("com.sougree.amithereyet.EDIT_ALERT");
+				Alert thisAlert = (Alert)v.getTag();
+				i.putExtra(AlertContentProvider._ID, thisAlert.getId());
+				context.startActivity(i);
+			}
+		});
 	    
 	    TextView listItemInfo = (TextView)view.findViewById(R.id.listAlertInfo); 
 	    listItemInfo.setText(alert.getInfo()); 

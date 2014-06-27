@@ -1,6 +1,7 @@
 package com.sougree.amithereyet.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.sougree.amithereyet.AlertContentProvider;
@@ -11,7 +12,6 @@ import com.sougree.amithereyet.model.Notification;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.location.Location;
 import android.net.Uri;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -68,6 +68,37 @@ public class AlertDAO {
 		return uri;
 	}
 	
+	public int updateAlert(Alert alert, EditText nameTxt, EditText latTxt, EditText lonTxt, EditText radTxt, Switch... switches) {
+		alert.setAlertName(nameTxt.getText().toString());
+		alert.setLatitude(Float.parseFloat(latTxt.getText().toString()));
+		alert.setLongitude(Float.parseFloat(lonTxt.getText().toString()));
+		alert.setRadius(Integer.parseInt(radTxt.getText().toString()));
+		
+		for (Switch chk: switches) {
+			if(chk.isChecked()) {
+				switch(chk.getId()) {
+					case R.id.toastChk:
+						alert.addNotification(Notification.TOAST);
+					break;
+					case R.id.ringChk:
+						alert.addNotification(Notification.RING);
+					break;
+				}
+			}
+		}
+		
+		ContentValues values = new ContentValues();
+		values.put(AlertContentProvider.NAME, alert.getAlertName());
+		values.put(AlertContentProvider.LATITUDE, alert.getLatitude());
+		values.put(AlertContentProvider.LONGITUDE, alert.getLongitude());
+		values.put(AlertContentProvider.RADIUS, alert.getRadius());
+		values.put(AlertContentProvider.NOTIFICATIONS, alert.getNotifications().toString());
+		
+		Uri uri = Uri.withAppendedPath(AlertContentProvider.CONTENT_URI, alert.getId()+"");
+		String whereClause = AlertContentProvider._ID + " = " + alert.getId();
+		return cr.update(uri, values, whereClause, null);
+	}
+	
 	/**
 	 * This method deletes a given alert
 	 * @param cr
@@ -93,11 +124,49 @@ public class AlertDAO {
 				alert.setLatitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LATITUDE)));
 				alert.setLongitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LONGITUDE)));
 				alert.setRadius(cursor.getInt(cursor.getColumnIndex(AlertContentProvider.RADIUS)));
+				alert.getNotifications().addAll(getNotifications(cursor.getString(cursor.getColumnIndex(AlertContentProvider.NOTIFICATIONS))));
 				
 				alerts.add(alert);
 			} while(cursor.moveToNext());
 		}
 		
 		return alerts;
+	}
+	
+	public Alert getAlert(int dbPK) {
+		
+		Alert alert = null;
+		String filter = AlertContentProvider._ID + " = " + dbPK;
+		Cursor cursor = cr.query(AlertContentProvider.CONTENT_URI, null, filter, null, AlertContentProvider.NAME);
+		
+		if (cursor != null && cursor.moveToFirst()) {
+
+			alert = new Alert();
+			alert.setId(cursor.getInt(cursor.getColumnIndex(AlertContentProvider._ID)));
+			alert.setAlertName(cursor.getString(cursor.getColumnIndex(AlertContentProvider.NAME)));
+			alert.setLatitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LATITUDE)));
+			alert.setLongitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LONGITUDE)));
+			alert.setRadius(cursor.getInt(cursor.getColumnIndex(AlertContentProvider.RADIUS)));
+			alert.getNotifications().addAll(getNotifications(cursor.getString(cursor.getColumnIndex(AlertContentProvider.NOTIFICATIONS))));
+		}
+		
+		return alert;
+	}
+	
+	private List<Notification> getNotifications(String notificationColFromDB)
+	{
+		List<Notification> retlist = new ArrayList<Notification>();
+		
+		notificationColFromDB = notificationColFromDB.substring(1, notificationColFromDB.length()-1);
+		for(String notStr: Arrays.asList(notificationColFromDB.split(""))) {
+			if("TOAST".equals(notStr)) {
+				retlist.add(Notification.TOAST);
+			}
+			else if ("RING".equals(notStr)) {
+				retlist.add(Notification.RING);
+			}
+		}
+	
+		return retlist;
 	}
 }

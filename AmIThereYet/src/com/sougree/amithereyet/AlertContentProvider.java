@@ -94,8 +94,8 @@ public class AlertContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+		String whereClause = _ID + " = " + uri.getPathSegments().get(1);
+		return db.update(ALERT_TABLE_NAME, values, whereClause, null);
 	}
 	
 	private class DatabaseHelper extends SQLiteOpenHelper {
