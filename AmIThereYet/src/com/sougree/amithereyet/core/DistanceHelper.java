@@ -24,7 +24,14 @@ public class DistanceHelper {
 		
 		if(alertList != null && alertList.size() > 0 && currentLocation != null) {
 			for(Alert alert: alertList) {
-				retVal.add(alert);
+				int radius = alert.getRadius();
+				Location alertLocation = new Location(LocationManager.GPS_PROVIDER);
+				alertLocation.setLatitude(alert.getLatitude());
+				alertLocation.setLongitude(alert.getLongitude());
+				float distance = currentLocation.distanceTo(alertLocation);
+				
+				if(radius >= distance)
+					retVal.add(alert);
 			}
 		}
 		
@@ -45,7 +52,7 @@ public class DistanceHelper {
 					alertLocation.setLatitude(alert.getLatitude());
 					alertLocation.setLongitude(alert.getLongitude());
 
-				float distance = currentLocation.distanceTo(alertLocation);
+					float distance = currentLocation.distanceTo(alertLocation);
 				
 					alertwi.setInfo(formatDistanceMessage(distance));
 				}

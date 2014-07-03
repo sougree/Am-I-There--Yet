@@ -1,5 +1,6 @@
 package com.sougree.amithereyet;
 
+import com.sougree.amithereyet.core.AlertProcessor;
 import com.sougree.amithereyet.core.DistanceHelper;
 import com.sougree.amithereyet.dao.AlertDAO;
 
@@ -19,6 +20,7 @@ public class MainActivity extends Activity implements LocationListener {
 	private AlertDAO alertDao;
 	private Location lastKnownLocation;
 	private LocationManager locationManager;
+	private AlertProcessor alertProcessor;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class MainActivity extends Activity implements LocationListener {
 		setContentView(R.layout.activity_main);
 		
 		alertDao = new AlertDAO(getContentResolver());
+		alertProcessor = new AlertProcessor(this, null, this.lastKnownLocation);
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
                 3000,   // 3 sec
@@ -57,12 +60,14 @@ public class MainActivity extends Activity implements LocationListener {
 	public void onLocationChanged(Location location) {
 		this.lastKnownLocation = location;
 		refreshAlertList();
+		alertProcessor.relocate(lastKnownLocation);
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
 		this.lastKnownLocation = null;
 		refreshAlertList();
+		alertProcessor.relocate(lastKnownLocation);
 	}
 
 	@Override
@@ -79,5 +84,6 @@ public class MainActivity extends Activity implements LocationListener {
 		AlertListAdapter adapter = new AlertListAdapter(this, DistanceHelper.getAlertsWithInfo(alertDao.getAlerts(), lastKnownLocation));
 		ListView list = (ListView)findViewById(R.id.alertList);
 		list.setAdapter(adapter);
+		alertProcessor.reload(alertDao.getAlerts());
 	}
 }
