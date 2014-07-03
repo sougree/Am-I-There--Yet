@@ -30,8 +30,8 @@ public class AlertContentProvider extends ContentProvider {
 	private SQLiteDatabase db; 
 	static final String DATABASE_NAME = "AmIThereYet"; 
 	static final String ALERT_TABLE_NAME = "Alert"; 
-	static final int DATABASE_VERSION = 1; 
-	static final String CREATE_DB_TABLE = " CREATE TABLE " + ALERT_TABLE_NAME + 
+	static final int ALERT_DATABASE_VERSION = 1; 
+	static final String CREATE_DB_ALERT_TABLE = " CREATE TABLE " + ALERT_TABLE_NAME + 
 			" (_id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
 			" name TEXT NOT NULL, " +
 			" latitude TEXT NOT NULL, " +
@@ -101,12 +101,12 @@ public class AlertContentProvider extends ContentProvider {
 	private class DatabaseHelper extends SQLiteOpenHelper {
 
 		public DatabaseHelper(Context context) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+			super(context, DATABASE_NAME, null, ALERT_DATABASE_VERSION);
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			db.execSQL(CREATE_DB_TABLE);
+			db.execSQL(CREATE_DB_ALERT_TABLE);
 		}
 
 		@Override

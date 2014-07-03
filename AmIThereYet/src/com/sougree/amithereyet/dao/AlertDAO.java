@@ -62,7 +62,6 @@ public class AlertDAO {
 		values.put(AlertContentProvider.LONGITUDE, alert.getLongitude());
 		values.put(AlertContentProvider.RADIUS, alert.getRadius());
 		values.put(AlertContentProvider.NOTIFICATIONS, alert.getNotifications().toString());
-		
 		Uri uri = cr.insert(AlertContentProvider.CONTENT_URI, values);
 		
 		return uri;
@@ -93,7 +92,6 @@ public class AlertDAO {
 		values.put(AlertContentProvider.LONGITUDE, alert.getLongitude());
 		values.put(AlertContentProvider.RADIUS, alert.getRadius());
 		values.put(AlertContentProvider.NOTIFICATIONS, alert.getNotifications().toString());
-		
 		Uri uri = Uri.withAppendedPath(AlertContentProvider.CONTENT_URI, alert.getId()+"");
 		String whereClause = AlertContentProvider._ID + " = " + alert.getId();
 		return cr.update(uri, values, whereClause, null);
@@ -125,7 +123,6 @@ public class AlertDAO {
 				alert.setLongitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LONGITUDE)));
 				alert.setRadius(cursor.getInt(cursor.getColumnIndex(AlertContentProvider.RADIUS)));
 				alert.getNotifications().addAll(getNotifications(cursor.getString(cursor.getColumnIndex(AlertContentProvider.NOTIFICATIONS))));
-				
 				alerts.add(alert);
 			} while(cursor.moveToNext());
 		}
@@ -156,9 +153,8 @@ public class AlertDAO {
 	private List<Notification> getNotifications(String notificationColFromDB)
 	{
 		List<Notification> retlist = new ArrayList<Notification>();
-		
 		notificationColFromDB = notificationColFromDB.substring(1, notificationColFromDB.length()-1);
-		for(String notStr: Arrays.asList(notificationColFromDB.split(""))) {
+		for(String notStr: Arrays.asList(notificationColFromDB.split(","))) {
 			if("TOAST".equals(notStr)) {
 				retlist.add(Notification.TOAST);
 			}
