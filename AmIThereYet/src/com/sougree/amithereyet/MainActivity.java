@@ -31,8 +31,8 @@ public class MainActivity extends Activity implements LocationListener {
 		alertProcessor = new AlertProcessor(this, null, this.lastKnownLocation);
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
-                3000,   // 3 sec
-                10, this);
+                30000,   // 3 sec
+                100, this);
 				
 		refreshAlertList();
 		

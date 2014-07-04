@@ -123,6 +123,26 @@ public class Alert {
 		if(aNotification != null) this.notifications.add(aNotification);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return this._id;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object o) {
+		
+		if(o instanceof Alert) {
+			return this._id == ((Alert)o).getId();
+		}
+		return false;
+	}
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(this.alertName);
