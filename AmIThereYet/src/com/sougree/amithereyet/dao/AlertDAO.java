@@ -1,8 +1,11 @@
 package com.sougree.amithereyet.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.sougree.amithereyet.AlertContentProvider;
 import com.sougree.amithereyet.R;
@@ -13,6 +16,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Switch;
 
@@ -61,7 +65,7 @@ public class AlertDAO {
 		values.put(AlertContentProvider.LATITUDE, alert.getLatitude());
 		values.put(AlertContentProvider.LONGITUDE, alert.getLongitude());
 		values.put(AlertContentProvider.RADIUS, alert.getRadius());
-		values.put(AlertContentProvider.NOTIFICATIONS, alert.getNotifications().toString());
+		values.put(AlertContentProvider.NOTIFICATIONS, getJSON(alert.getNotifications()));
 		Uri uri = cr.insert(AlertContentProvider.CONTENT_URI, values);
 		
 		return uri;
@@ -91,7 +95,7 @@ public class AlertDAO {
 		values.put(AlertContentProvider.LATITUDE, alert.getLatitude());
 		values.put(AlertContentProvider.LONGITUDE, alert.getLongitude());
 		values.put(AlertContentProvider.RADIUS, alert.getRadius());
-		values.put(AlertContentProvider.NOTIFICATIONS, alert.getNotifications().toString());
+		values.put(AlertContentProvider.NOTIFICATIONS, getJSON(alert.getNotifications()));
 		Uri uri = Uri.withAppendedPath(AlertContentProvider.CONTENT_URI, alert.getId()+"");
 		String whereClause = AlertContentProvider._ID + " = " + alert.getId();
 		return cr.update(uri, values, whereClause, null);
@@ -122,7 +126,7 @@ public class AlertDAO {
 				alert.setLatitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LATITUDE)));
 				alert.setLongitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LONGITUDE)));
 				alert.setRadius(cursor.getInt(cursor.getColumnIndex(AlertContentProvider.RADIUS)));
-				alert.getNotifications().addAll(getNotifications(cursor.getString(cursor.getColumnIndex(AlertContentProvider.NOTIFICATIONS))));
+				alert.getNotifications().addAll(getNotificationsArray(cursor.getString(cursor.getColumnIndex(AlertContentProvider.NOTIFICATIONS))));
 				alerts.add(alert);
 			} while(cursor.moveToNext());
 		}
@@ -144,25 +148,63 @@ public class AlertDAO {
 			alert.setLatitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LATITUDE)));
 			alert.setLongitude(cursor.getFloat(cursor.getColumnIndex(AlertContentProvider.LONGITUDE)));
 			alert.setRadius(cursor.getInt(cursor.getColumnIndex(AlertContentProvider.RADIUS)));
-			alert.getNotifications().addAll(getNotifications(cursor.getString(cursor.getColumnIndex(AlertContentProvider.NOTIFICATIONS))));
+			alert.getNotifications().addAll(getNotificationsArray(cursor.getString(cursor.getColumnIndex(AlertContentProvider.NOTIFICATIONS))));
 		}
 		
 		return alert;
 	}
 	
-	private List<Notification> getNotifications(String notificationColFromDB)
-	{
+	private List<Notification> getNotificationsArray(String notifJSONFromDB) {
 		List<Notification> retlist = new ArrayList<Notification>();
-		notificationColFromDB = notificationColFromDB.substring(1, notificationColFromDB.length()-1);
-		for(String notStr: Arrays.asList(notificationColFromDB.split(","))) {
-			if("TOAST".equals(notStr)) {
-				retlist.add(Notification.TOAST);
+
+		Log.d("JSON - IP ", notifJSONFromDB);
+		try {
+			JSONObject json = new JSONObject(notifJSONFromDB);
+			JSONArray notifArray = json.getJSONArray("NOTIF");
+			
+			for(int i = 0; i < notifArray.length(); i++) {
+				Notification n = getNotification(notifArray.optString(i));
+				retlist.add(n);
 			}
-			else if ("RING".equals(notStr)) {
-				retlist.add(Notification.RING);
-			}
+		} 
+		catch (JSONException e) {
+			Log.d("JSON - EX ", e.getMessage());
+			//e.printStackTrace();
 		}
-	
+		Log.d("JSON - OP ", retlist.toString());
 		return retlist;
+	}
+	
+	private String getJSON(List<Notification> notifs) {
+		String ret = "";
+		
+		JSONObject json = new JSONObject();
+		JSONArray array = new JSONArray();
+		
+		for(Notification n: notifs) {
+			array.put(n.toString());
+		}
+		
+		try {
+			json.put("NOTIF", array);
+			ret = json.toString();
+		} 
+		catch (JSONException e) {
+			//TODO: Handle it :(
+		}
+		
+		return ret;
+	}
+	
+	private Notification getNotification(String notif) {
+		if("TOAST".equals(notif)) {
+			return Notification.TOAST;
+		}
+		else if ("RING".equals(notif)) {
+			return Notification.RING;
+		}
+		else {
+			return null;
+		}
 	}
 }
